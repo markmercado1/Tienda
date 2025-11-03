@@ -5,8 +5,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "ms-inventory", url = "${services.inventory.url}")
+@FeignClient(name = "ms-inventario-service", path = "/inventory")
 public interface InventoryClient {
-    @PostMapping("/api/inventory/update")
+    @PostMapping("/inventory/update")
     void updateStock(@RequestBody StockUpdateDto dto);
 }

@@ -13,24 +13,31 @@ spring:
           lower-case-service-id: true
 
       routes:
-        - id: ms-cliente
-          uri: lb://ms-cliente
+        - id: ms-catalogo-service
+          uri: lb://ms-catalogo-service
           predicates:
-            - Path=/clientes/**
+            - Path=/products/**
           filters:
             - name: AuthFilter
 
-        - id: ms-reserva
-          uri: lb://ms-reserva
+        - id: ms-compra-service
+          uri: lb://ms-compra-service
           predicates:
-            - Path=/reservas/**
+            - Path=/purchases/**
           filters:
             - name: AuthFilter
 
-        - id: ms-habitacion
-          uri: lb://ms-habitacion
+        - id: ms-inventario-service
+          uri: lb://ms-inventario-service
           predicates:
-            - Path=/habitaciones/**
+            - Path=/inventory/**
+          filters:
+            - name: AuthFilter
+
+        - id: ms-venta-service
+          uri: lb://ms-venta-service
+          predicates:
+            - Path=/sales/**
           filters:
             - name: AuthFilter
 
