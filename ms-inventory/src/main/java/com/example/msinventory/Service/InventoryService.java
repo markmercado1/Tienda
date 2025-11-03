@@ -2,11 +2,13 @@ package com.example.msinventory.Service;
 
 import com.example.msinventory.Dto.InventoryDto;
 import com.example.msinventory.Dto.MovementDto;
+import com.example.msinventory.Dto.ProductDto;
 import com.example.msinventory.Dto.StockUpdateDto;
 import com.example.msinventory.Entity.Inventory;
 import com.example.msinventory.Entity.InventoryMovement;
 import com.example.msinventory.Repository.InventoryMovementRepository;
 import com.example.msinventory.Repository.InventoryRepository;
+import com.example.msinventory.feign.ProductClient;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.util.List;
 public class InventoryService {
     private final InventoryRepository inventoryRepository;
     private final InventoryMovementRepository movementRepository;
+    private final ProductClient productClient;
 
     public InventoryDto getStock(String productSku) {
         return inventoryRepository.findByProductSku(productSku)
@@ -27,6 +30,10 @@ public class InventoryService {
 
     @Transactional
     public void updateStock(StockUpdateDto dto) {
+        ProductDto product = productClient.getBySku(dto.productSku());
+        if (product == null) {
+            throw new RuntimeException("Producto no encontrado en ms-products");
+        }
         Inventory inventory = inventoryRepository.findByProductSku(dto.productSku())
             .orElseGet(() -> {
                 Inventory inv = new Inventory();
